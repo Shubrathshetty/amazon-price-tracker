@@ -8,6 +8,8 @@ import { registerChatRoutes } from "./chat";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { registerMvpRestRoutes } from "../restRoutes";
+import { initializePriceChecker } from "../priceChecker";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -38,6 +40,8 @@ async function startServer() {
   registerOAuthRoutes(app);
   // Chat API with streaming and tool calling
   registerChatRoutes(app);
+  // MVP REST API
+  registerMvpRestRoutes(app);
   // tRPC API
   app.use(
     "/api/trpc",
@@ -62,6 +66,7 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+    initializePriceChecker();
   });
 }
 

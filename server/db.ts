@@ -117,6 +117,15 @@ export async function getUserTrackedProducts(userId: number): Promise<TrackedPro
   return db.select().from(trackedProducts).where(eq(trackedProducts.userId, userId));
 }
 
+export async function getTrackedProductsByEmail(email: string): Promise<TrackedProduct[]> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  return db.select().from(trackedProducts).where(eq(trackedProducts.notificationEmail, email));
+}
+
 export async function getTrackedProductById(productId: number): Promise<TrackedProduct | undefined> {
   const db = await getDb();
   if (!db) {
